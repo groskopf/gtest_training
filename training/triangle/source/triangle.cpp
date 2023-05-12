@@ -15,7 +15,7 @@ int Triangle::getPerimeter() const {
 double Triangle::getArea() const {
   // Here we use Heron's formula to compute the area
   double halfPerimeter = getPerimeter() / 2.0;
-  double radicand = halfPerimeter * (halfPerimeter - side1) * (halfPerimeter - side2) * (halfPerimeter - side3);
+  double radicand = halfPerimeter * (halfPerimeter - side1) * (halfPerimeter - side2) * (halfPerimeter - side2);
   return sqrt(radicand);
 }
 
@@ -28,10 +28,10 @@ bool Triangle::isEquilateral() const {
 }
 
 Triangle::Kind Triangle::getKind() const {
-  if (isIsosceles()) {
+  if (isEquilateral()) {
     return Kind::ISOSCELES;
-  } else if (isEquilateral()) {
-    return Kind::EQUILATERAL;
+  } else if (isIsosceles()) {
+    return Kind::ISOSCELES;
   } else {
     return Kind::SCALENE;
   }
