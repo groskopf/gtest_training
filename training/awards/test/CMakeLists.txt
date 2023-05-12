@@ -1,6 +1,6 @@
 add_executable(awards_test 
   awards_test.cpp
-#  awards_test_solution.cpp
+  # awards_test_solution.cpp
 )
 
 set_target_properties(awards_test PROPERTIES COMPILE_FLAGS "-g3 -Os -Wall -ggdb" )

@@ -10,16 +10,16 @@ using namespace ::std;
 
 class RankListMock : public RankList {
  public:
-  MOCK_METHOD0(getNext, string());
+  MOCK_METHOD(string, getNext, ());
 };
 
 class AwardCeremonyActionsMock : public AwardCeremonyActions {
  public:
-  MOCK_METHOD0(playAnthem, void());
-  MOCK_METHOD0(turnOffTheLightsAndGoHome, void());
-  MOCK_METHOD1(awardBronze, void(string recipient));
-  MOCK_METHOD1(awardSilver, void(string recipient));
-  MOCK_METHOD1(awardGold, void(string recipient));
+  MOCK_METHOD(void, playAnthem, ());
+  MOCK_METHOD(void, turnOffTheLightsAndGoHome, ());
+  MOCK_METHOD(void, awardBronze, (string recipient));
+  MOCK_METHOD(void, awardSilver, (string recipient));
+  MOCK_METHOD(void, awardGold, (string recipient));
 };
 
 TEST(AwardsTest, testPerformAwardCeremony) {
@@ -75,34 +75,20 @@ TEST(AwardsTest, testFairCeremony) {
   NiceMock<RankListMock> ranklist;
   StrictMock<AwardCeremonyActionsMock> actionsMock;
 
-  EXPECT_CALL(ranklist, getNext()).Times(3).WillRepeatedly(Return("Paul"));
+  EXPECT_CALL(ranklist, getNext()).WillOnce(Return("Palle")).RetiresOnSaturation();
+  EXPECT_CALL(ranklist, getNext()).WillOnce(Return("Polle")).RetiresOnSaturation();
+  EXPECT_CALL(ranklist, getNext()).WillOnce(Return("Ruth")).RetiresOnSaturation();
 
   {
     InSequence s;
     EXPECT_CALL(actionsMock, playAnthem());
-    EXPECT_CALL(actionsMock, awardBronze(StrEq("Paul")));
-    EXPECT_CALL(actionsMock, awardSilver(StrEq("Paul")));
-    EXPECT_CALL(actionsMock, awardGold(StrEq("Paul")));
+    EXPECT_CALL(actionsMock, awardBronze(StrEq("Ruth")));
+    EXPECT_CALL(actionsMock, awardSilver(StrEq("Polle")));
+    EXPECT_CALL(actionsMock, awardGold(StrEq("Palle")));
     EXPECT_CALL(actionsMock, turnOffTheLightsAndGoHome());
   }
 
   performAwardCeremony(ranklist, actionsMock);
 }
 
-TEST(AwardsTest, testFairCeremony) {
-  NiceMock<RankListMock> ranklist;
-  StrictMock<AwardCeremonyActionsMock> actionsMock;
 
-  EXPECT_CALL(ranklist, getNext()).Times(3).WillRepeatedly(Return("Paul"));
-
-  {
-    InSequence s;
-    EXPECT_CALL(actionsMock, playAnthem());
-    EXPECT_CALL(actionsMock, awardBronze(StrEq("Paul")));
-    EXPECT_CALL(actionsMock, awardSilver(StrEq("Paul")));
-    EXPECT_CALL(actionsMock, awardGold(StrEq("Paul")));
-    EXPECT_CALL(actionsMock, turnOffTheLightsAndGoHome());
-  }
-
-  performAwardCeremony(ranklist, actionsMock);
-}
