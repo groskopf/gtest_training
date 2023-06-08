@@ -7,4 +7,4 @@ set(BUILD_TESTING ON)
 enable_testing()
 
 include(cmake/googletest.cmake)
-add_subdirectory(training)
+add_subdirectory(source)
